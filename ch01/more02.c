@@ -33,12 +33,13 @@ void do_more(FILE *fp) {
 		char line[LINELEN];
 		int num_of_lines = 0;
 		int reply;
-		FILE *fp_tty = fopen("/dev/tty","r");
-		if( fp_tty == NULL )
-				exit(1);
 		while( fgets(line,LINELEN,fp) ) {
 				if( num_of_lines == PAGELEN ) {
+						FILE *fp_tty = fopen("/dev/tty","r");
+						if( fp_tty == NULL)
+								exit(1);
 						reply = see_more(fp_tty);
+						fclose(fp_tty);
 						if( reply == 0 )
 								break;
 						num_of_lines -= reply;
@@ -47,7 +48,6 @@ void do_more(FILE *fp) {
 						exit(1);
 				num_of_lines++;
 		}
-		fclose(fp_tty);
 }
 
 /**
