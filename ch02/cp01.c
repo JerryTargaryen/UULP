@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFFERSIZE 4096
 #define COPYMODE 0644
@@ -25,11 +26,11 @@ int main(int ac,char *av[]) {
 		if( (in_fd=open(av[1],O_RDONLY)) == -1 )
 				oops("Cannot open",av[1]);
 
-		if( (out_fd=open(av[2],COPYMODE)) == -1 )
+		if( (out_fd=creat(av[2],COPYMODE)) == -1 )
 				oops("Cannot creat",av[2]);
 
 		while( (n_chars = read(in_fd,buf,BUFFERSIZE)) > 0 )
-				if( write(out_fd,buf,BUFFERSIZE) != n_chars )
+				if( write(out_fd,buf,n_chars) != n_chars )
 						oops("Write error to ",av[2]);
 
 		if( n_chars == -1 )
